@@ -12,10 +12,14 @@ metadata:
     # kubernetes.io/tls-acme: "true"
     # nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
+{{- if .Values.ingress.tls }}
   tls:
     - hosts: 
-      - "*.norseamerican.com"
-      secretName: na-letsencrypt
+      {{- range .Values.ingress.tls.hosts }}
+      - {{ . | quote }}
+      {{ end -}}
+      secretname: {{ .Values.ingress.tls.secretName }}
+{{- end }}
   rules:
     - host: {{ .Values.ingress.host }} 
       http:

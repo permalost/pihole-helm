@@ -22,6 +22,10 @@ configData: |-
 
 ingress:
   host: dns.norseamerican.com
+  tls:
+    hosts: 
+      - "*.norseamerican.com"
+    secretName: na-letsencrypt
 
 environment:
   - name: TZ
