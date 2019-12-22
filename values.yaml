@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 image:
   repository: pihole/pihole
-  tag: 4.2.2-1
+  tag: 4.3.2-1
   pullPolicy: IfNotPresent
 
 persistence:
@@ -25,14 +25,26 @@ ingress:
   tls:
     hosts: 
       - "*.norseamerican.com"
-    secretName: na-letsencrypt
+    secretName: norseamerican-wildcard
 
 environment:
   - name: TZ
     value: 'America/Boise'
   - name: WEBPASSWORD
-    value: password
+    valueFrom:
+      secretKeyRef:
+        name: pihole-admin
+        key: webpassword
+# To create password secret use below command
+# kubectl create secret generic pihole-admin --from-literal=webpassword=PASSWORD
 
 dns:
   - 127.0.0.1
+  - 8.8.8.8
   - 1.1.1.1
+
+blocklist: |-
+  https://dbl.oisd.nl
+
+whitelist: |-
+  github.com

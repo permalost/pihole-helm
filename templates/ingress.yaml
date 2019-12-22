@@ -9,8 +9,7 @@ metadata:
     heritage: {{ .Release.Service }}
   annotations:
     kubernetes.io/ingress.class: "nginx"
-    # kubernetes.io/tls-acme: "true"
-    # nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
 {{- if .Values.ingress.tls }}
   tls:
@@ -18,17 +17,10 @@ spec:
       {{- range .Values.ingress.tls.hosts }}
       - {{ . | quote }}
       {{ end -}}
-      secretname: {{ .Values.ingress.tls.secretName }}
+      secretName: {{ .Values.ingress.tls.secretName }}
 {{- end }}
   rules:
     - host: {{ .Values.ingress.host }} 
-      http:
-        paths:
-          - path: 
-            backend:
-              serviceName: {{ template "fullname" . }}
-              servicePort: http
-    - host: pi.hole 
       http:
         paths:
           - path: 

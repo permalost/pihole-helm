@@ -8,8 +8,6 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  # type: LoadBalancer
-  # externalTrafficPolicy: Local
   selector:
     app: {{ template "fullname" . }} 
   ports:
